@@ -6,6 +6,11 @@
 
 A framework to build clusters using the hashicorp's raft implementation.
 
+<p align="center">
+    <img src="example/example.gif">
+    <a href="https://onelineplayer.com/player.html?autoplay=false&autopause=false&muted=false&loop=true&url=https%3A%2F%2Fgithub.com%2Fdanielgatis%2Fgo-rafting%2Fblob%2Fmain%2Fexample%2Fexample.mp4%3Fraw%3Dtrue&poster=&time=true&progressBar=true&overlay=true&muteButton=true&fullscreenButton=true&style=light&quality=auto&playButton=true" target="_blank"/>high quality video version</a>
+</p>
+
 ## Install
 
 ```bash
