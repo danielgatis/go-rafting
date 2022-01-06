@@ -3,6 +3,7 @@ package rafting
 import (
 	context "context"
 	"fmt"
+	"time"
 
 	pb "github.com/danielgatis/go-rafting/protobuf"
 )
@@ -19,7 +20,7 @@ func newRaftingServerImpl(node *Node) *raftingServiceServer {
 }
 
 func (s *raftingServiceServer) Apply(ctx context.Context, request *pb.ApplyRequest) (*pb.ApplyResponse, error) {
-	result := s.node.raft.Apply(request.Payload, 0)
+	result := s.node.raft.Apply(request.Payload, time.Second)
 	if result.Error() != nil {
 		return nil, fmt.Errorf("raft.Apply(...): %w", result.Error())
 	}

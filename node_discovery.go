@@ -6,13 +6,13 @@ import (
 )
 
 func startDiscoveryLookup(ctx context.Context, n *Node) error {
-	tick := time.Tick(n.discoveryLookupInterval)
+	tick := time.NewTicker(n.discoveryLookupInterval)
 
 	for {
 		select {
 		case <-ctx.Done():
 			return nil
-		case <-tick:
+		case <-tick.C:
 			addrs, err := n.discovery.Lookup()
 			if err != nil {
 				n.logger.Error(err)

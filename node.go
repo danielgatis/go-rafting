@@ -16,10 +16,11 @@ import (
 )
 
 type Node struct {
-	id      string
-	port    int
-	dataDir string
-	addr    string
+	id             string
+	port           int
+	snapshotRetain int
+	dataDir        string
+	addr           string
 
 	marshalFn   func(interface{}) ([]byte, error)
 	unmarshalFn func([]byte, interface{}) error
@@ -37,10 +38,11 @@ type Node struct {
 
 func NewNode(ID string, fsm raft.FSM, port int, opts ...NodeOption) (*Node, error) {
 	var (
+		defaultSnapshotRetain          = 5
 		defaultDataDir                 = "./data"
 		defaultLogger                  = logrus.StandardLogger()
 		defaultDiscovery               = discovery.NewNullDiscovery()
-		defaultDiscoveryLookupInterval = 2 * time.Second
+		defaultDiscoveryLookupInterval = time.Second
 		defaultMarshalFn               = json.Marshal
 		defaultUnmarshalFn             = json.Unmarshal
 	)
@@ -49,6 +51,7 @@ func NewNode(ID string, fsm raft.FSM, port int, opts ...NodeOption) (*Node, erro
 		id:                      ID,
 		port:                    port,
 		dataDir:                 defaultDataDir,
+		snapshotRetain:          defaultSnapshotRetain,
 		logger:                  defaultLogger,
 		discovery:               defaultDiscovery,
 		discoveryLookupInterval: defaultDiscoveryLookupInterval,

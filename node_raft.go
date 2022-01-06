@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/raft"
 	store "github.com/hashicorp/raft-boltdb/v2"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 func initRaft(n *Node) error {
@@ -30,7 +31,7 @@ func initRaft(n *Node) error {
 		return fmt.Errorf("store.NewBoltStore(...): %w", err)
 	}
 
-	snapshotStore, err := raft.NewFileSnapshotStore(filepath.Join(n.dataDir, n.id), 5, os.Stderr)
+	snapshotStore, err := raft.NewFileSnapshotStore(filepath.Join(n.dataDir, n.id), n.snapshotRetain, os.Stderr)
 	if err != nil {
 		return fmt.Errorf("raft.NewFileSnapshotStore(...): %w", err)
 	}
@@ -41,7 +42,7 @@ func initRaft(n *Node) error {
 
 	n.addr = fmt.Sprintf("%s:%d", "0.0.0.0", n.port)
 	n.grpcServer = grpc.NewServer()
-	n.raftTransport = transport.New(raft.ServerAddress(n.addr), []grpc.DialOption{grpc.WithInsecure()})
+	n.raftTransport = transport.New(raft.ServerAddress(n.addr), []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())})
 	n.raftTransport.Register(n.grpcServer)
 	pb.RegisterRaftingServiceServer(n.grpcServer, newRaftingServerImpl(n))
 

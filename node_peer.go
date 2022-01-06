@@ -8,6 +8,7 @@ import (
 	pb "github.com/danielgatis/go-rafting/protobuf"
 	"github.com/hashicorp/raft"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 type peer struct {
@@ -37,7 +38,11 @@ func getPeers(addrs []string) []peer {
 
 func getPeer(addr string) (*pb.GetDetailsResponse, error) {
 	var opt grpc.DialOption = grpc.EmptyDialOption{}
-	conn, err := grpc.Dial(addr, grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(5*time.Second), opt)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+
+	conn, err := grpc.DialContext(ctx, addr, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock(), opt)
 	if err != nil {
 		return nil, fmt.Errorf(`grpc.Dial(...): %w`, err)
 	}
@@ -64,9 +69,7 @@ func remPeer(n *Node, details []peer) {
 		}
 
 		if !found {
-			if result := n.raft.RemoveServer(server.ID, 0, 0); result.Error() != nil {
-				n.logger.Error(result.Error())
-			}
+			n.raft.RemoveServer(server.ID, 0, 0)
 		}
 	}
 }
@@ -82,9 +85,7 @@ func addPeer(n *Node, details []peer) {
 		}
 
 		if !found {
-			if result := n.raft.AddVoter(raft.ServerID(detail.id), raft.ServerAddress(detail.addr), 0, 0); result.Error() != nil {
-				n.logger.Error(result.Error())
-			}
+			n.raft.AddVoter(raft.ServerID(detail.id), raft.ServerAddress(detail.addr), 0, 0)
 		}
 	}
 }

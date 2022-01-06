@@ -15,29 +15,19 @@ type fsmSnapshot struct {
 }
 
 func (s *fsmSnapshot) Persist(sink raft.SnapshotSink) error {
-	err := func() error {
-		bytes, err := s.snapshot()
-		if err != nil {
-			return fmt.Errorf("state.takeSnapshot(...): %w", err)
-		}
+	defer sink.Close()
 
-		if _, err := sink.Write(bytes); err != nil {
-			return fmt.Errorf("sink.Write(...): %w", err)
-		}
-
-		if err := sink.Close(); err != nil {
-			return fmt.Errorf("sink.Close(...): %w", err)
-		}
-
-		return nil
-	}()
-
+	bytes, err := s.snapshot()
 	if err != nil {
+		return fmt.Errorf("s.snapshot(...): %w", err)
+	}
+
+	if _, err := sink.Write(bytes); err != nil {
 		if err := sink.Cancel(); err != nil {
 			return fmt.Errorf("sink.Cancel(...): %w", err)
 		}
 
-		return err
+		return fmt.Errorf("sink.Write(...): %w", err)
 	}
 
 	return nil
