@@ -1,0 +1,23 @@
+syntax = "proto3";
+option go_package = "./protobuf";
+
+service RaftingService {
+    rpc Apply(ApplyRequest) returns (ApplyResponse) {}
+    rpc GetDetails(GetDetailsRequest) returns (GetDetailsResponse) {}
+}
+
+message ApplyRequest {
+    bytes payload = 1;
+}
+
+message ApplyResponse {
+    bytes payload = 1;
+}
+
+message GetDetailsResponse {
+    string id = 1;
+    int32 port = 2;
+}
+
+message GetDetailsRequest {
+}
