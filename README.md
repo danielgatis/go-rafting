@@ -6,9 +6,7 @@
 
 A framework to build clusters using the hashicorp's raft implementation.
 
-<p align="center">
-    <img src="example/example.gif" />
-</p>
+https://user-images.githubusercontent.com/7380/148815170-a7f8d586-405d-4d81-a640-26bcc98c6e02.mp4
 
 ## Install
 
