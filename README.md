@@ -4,7 +4,7 @@
 [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/danielgatis/go-rafting/master/LICENSE)
 [![Go Doc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](https://godoc.org/github.com/danielgatis/go-rafting)
 
-A framework to build clusters using the hashicorp's raft implementation.
+A framework to build fault tolerant apps.
 
 https://user-images.githubusercontent.com/7380/148815170-a7f8d586-405d-4d81-a640-26bcc98c6e02.mp4
 
