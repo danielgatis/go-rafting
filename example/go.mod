@@ -1,6 +1,6 @@
 module github.com/danielgatis/go-rafting-example
 
-go 1.23.0
+go 1.24.0
 
 require (
 	github.com/danielgatis/go-ctrlc v0.0.0-20220106020729-d49368c8200e
