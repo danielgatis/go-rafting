@@ -9,7 +9,7 @@ require (
 	github.com/danielgatis/go-logrus-adapters v0.0.0-20211221235956-952e2aa64092
 	github.com/hashicorp/raft v1.3.2
 	github.com/hashicorp/raft-boltdb/v2 v2.2.0
-	github.com/sirupsen/logrus v1.8.1
+	github.com/sirupsen/logrus v1.8.3
 	golang.org/x/sync v0.11.0
 	google.golang.org/grpc v1.56.3
 	google.golang.org/protobuf v1.30.0
